@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 from PySide6 import QtWidgets
 import xlrd
 import pandas as pd
@@ -535,8 +536,8 @@ class Ui_MainWindow(object):
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
 
-        df = xlrd.open_workbook("linac_library.xls")
-        total_item = list(df.sheet_names())
+        df = pd.ExcelFile("linac_library.xlsx")
+        total_item = list(df.sheet_names)
         for i in total_item:
             self.comboBox_linac.addItem(i)
 
@@ -558,7 +559,7 @@ class Ui_MainWindow(object):
         self.actionLicense.triggered.connect(self.license)
         self.actionHelp_Contact.triggered.connect(self.Contact)
 
-        user_file_name = pd.read_excel("user_library.xls", "user")
+        user_file_name = pd.read_excel("user_library.xlsx", "user")
         user_name_list = list(user_file_name.loc[:, "user"])
         for user in user_name_list:
             self.comboBox__user.addItem(user)
@@ -694,7 +695,7 @@ class Ui_MainWindow(object):
         '''selecting linac energy'''
         file_name = self.comboBox_linac.currentText()
         self.comboBox_energy.clear()
-        df = pd.read_excel('linac_library.xls',file_name)
+        df = pd.read_excel('linac_library.xlsx',file_name)
         total_item = (df.loc[:, "energy"])
         total_item_1 = total_item.count()
         self.comboBox_energy.addItem("select")
@@ -703,7 +704,7 @@ class Ui_MainWindow(object):
         self.comboBox_energy.currentTextChanged.connect(self.dose_rate)
     def dose_rate(self):
         file_name = self.comboBox_linac.currentText()
-        df = pd.read_excel('linac_library.xls', file_name)
+        df = pd.read_excel('linac_library.xlsx', file_name)
         energy_selected = self.comboBox_energy.currentText()
         dose_rate = df.loc[lambda  df: df["energy"]== energy_selected]
         dose_rate = dose_rate.loc[:,'dose_rate']
@@ -732,7 +733,7 @@ class Ui_MainWindow(object):
         tpr_2010 =tpr_20/tpr_10
         self.label_tpr_2010.setText(str(tpr_2010))
         file_name = self.comboBox_linac.currentText()
-        df = pd.read_excel('linac_library.xls', file_name)
+        df = pd.read_excel('linac_library.xlsx', file_name)
         energy_selected = self.comboBox_energy.currentText()
         tpr_value = df.loc[lambda  df: df["energy"]== energy_selected]
         print(tpr_value)
@@ -1061,7 +1062,7 @@ class Ui_MainWindow(object):
         self.label_abs_ref.setText(str(round(abs_ref_depth,4))+" Gy/MU")
 
         name_of_linac = self.comboBox_linac.currentText()
-        dmax_result = pd.read_excel('linac_library.xls', name_of_linac)
+        dmax_result = pd.read_excel('linac_library.xlsx', name_of_linac)
         energy_selected = self.comboBox_energy.currentText()
         dmax_result = dmax_result.loc[lambda dmax_result: dmax_result["energy"] == energy_selected]
         if self.comboBox_phantom_2.currentText() == "water phantom":
@@ -1077,7 +1078,7 @@ class Ui_MainWindow(object):
 
         self.label_abs_dmax.setText(str(round(abs_dmax,4))+" Gy/MU")
 
-        baseline = pd.read_excel('linac_library.xls', name_of_linac)
+        baseline = pd.read_excel('linac_library.xlsx', name_of_linac)
         baseline = baseline.loc[lambda base_line: baseline["energy"] == energy_selected]
         baseline = baseline.loc[:, 'output_baseline']
         baseline = baseline.values.tolist()
@@ -1089,7 +1090,7 @@ class Ui_MainWindow(object):
 
         name_of_the_la = self.comboBox_linac.currentText()
         energy_selected_mv = self.comboBox_energy.currentText()
-        depth_of_dmax = pd.read_excel('linac_library.xls', name_of_the_la)
+        depth_of_dmax = pd.read_excel('linac_library.xlsx', name_of_the_la)
         depth_of_dmax = depth_of_dmax.loc[lambda depth_of_dmax: depth_of_dmax["energy"] == energy_selected_mv]
         depth_of_dmax = depth_of_dmax.loc[:, 'dmax_depth']
         depth_of_dmax = depth_of_dmax.values.tolist()
@@ -1341,7 +1342,7 @@ class Ui_MainWindow(object):
         print(detector_details.get("wall_material"))
         name_of_the_la = self.comboBox_linac.currentText()
         energy_selected_mv = self.comboBox_energy.currentText()
-        depth_of_dmax = pd.read_excel('linac_library.xls', name_of_the_la)
+        depth_of_dmax = pd.read_excel('linac_library.xlsx', name_of_the_la)
         depth_of_dmax = depth_of_dmax.loc[lambda depth_of_dmax: depth_of_dmax["energy"] == energy_selected_mv]
         depth_of_dmax = depth_of_dmax.loc[:, 'dmax_depth']
         depth_of_dmax = depth_of_dmax.values.tolist()
