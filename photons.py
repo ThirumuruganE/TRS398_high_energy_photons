@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from PySide6 import QtWidgets
 import xlrd
 import pandas as pd
